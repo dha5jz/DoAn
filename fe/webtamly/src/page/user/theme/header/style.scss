@@ -1,0 +1,64 @@
+.header{
+  position: fixed; // Cố định header vào đầu màn hình
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; // Đảm bảo header nằm trên các phần tử khác
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+.header_top {
+  background: #f8f8f8;
+  a {
+      color: inherit;
+      text-decoration: none;
+  }
+  
+}
+
+.header_bottom {
+  background: #2f3990;
+
+  a {
+      color: white !important;
+      text-decoration: none;
+  }
+
+  .nav-link:hover {
+      color: #f8d210 !important;
+  }
+
+  .navbar-nav {
+      .nav-item {
+          position: relative;
+
+          &:hover .dropdown-menu {
+              display: block;
+              margin-top: 0;
+          }
+      }
+  }
+
+  .dropdown-menu {
+    background: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+    .dropdown-item {
+      color: #2f3990 !important;
+      &:hover {
+        background-color: #352ba4;
+        color: white !important;
+      }
+    }
+  }
+}
+
+.navbar-toggler-icon {
+  filter: brightness(0) invert(1);
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.navbar-nav .nav-item .dropdown-toggle::after {
+  display: none !important;
+}

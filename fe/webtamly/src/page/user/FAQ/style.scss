@@ -1,0 +1,51 @@
+.faq-page {
+    .faq-section {
+      padding: 50px 0;
+  
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2f3990; // Màu xanh nổi bật cho tiêu đề
+        font-weight: 700; // Tăng độ dày chữ
+      }
+      
+  
+      .faq-list {
+        max-width: 800px;
+        margin: 0 auto;
+  
+        .faq-item {
+          border: 1px solid #dee2e6;
+          border-radius: 5px;
+          margin-bottom: 15px;
+          overflow: hidden;
+          transition: all 0.3s ease-in-out;
+  
+          .question {
+            padding: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2f3990; // Màu xanh cho câu hỏi
+            color: white;
+            font-weight: bold;
+            border-bottom: 1px solid #dee2e6;
+            transition: background 0.3s;
+  
+            &:hover {
+              background-color: #0056b3; // Màu xanh đậm hơn khi hover
+            }
+          }
+  
+          .answer {
+            padding: 15px;
+            background-color: #f8f9fa; // Màu xám nhạt cho câu trả lời
+            color: #333;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+  

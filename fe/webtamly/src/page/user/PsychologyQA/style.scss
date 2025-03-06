@@ -1,0 +1,60 @@
+.psychology-qa-page {
+    .qa-section {
+      padding: 50px 0;
+      text-align: center;
+  
+      h2 {
+        color: #2f3990;
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+  
+      .description {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 30px;
+      }
+  
+      .qa-list {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: left;
+  
+        .qa-item {
+          background: #f8f9fa;
+          border: 1px solid #dee2e6;
+          border-radius: 8px;
+          padding: 15px;
+          margin-bottom: 15px;
+  
+          .question {
+            font-size: 16px;
+            font-weight: bold;
+            color: #2f3990;
+          }
+  
+          .answer {
+            font-size: 14px;
+            color: #090909;
+            margin-top: 10px;
+          }
+        }
+      }
+  
+      .ask-question-form {
+        max-width: 600px;
+        margin: 30px auto;
+        text-align: left;
+        .h{
+            font-weight: bold;
+            color: #2f3990;
+        }
+        .btn {
+          width: 100%;
+          margin-top: 10px;
+          background-color: #2f3990;
+        }
+      }
+    }
+  }
+  

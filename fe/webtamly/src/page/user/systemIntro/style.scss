@@ -1,0 +1,162 @@
+// Import Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+// Màu sắc chủ đạo
+$primary-color: #2f3990;
+$secondary-color: #f8f8f8;
+$text-color: #333;
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+// **Hero Section**
+.hero-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("") center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+
+  .hero-content {
+    max-width: 700px;
+    margin: 0 auto;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+  }
+}
+
+// **Features Section**
+.features-section {
+  padding: 60px 20px;
+  background: $secondary-color;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: $primary-color;
+    font-weight: bold;
+  }
+
+  .feature-item {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px $shadow-color;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    i {
+      font-size: 2.5rem;
+      color: $primary-color;
+      margin-bottom: 15px;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: $text-color;
+    }
+  }
+}
+
+// **Process Section**
+.process-section {
+  padding: 60px 20px;
+  background: white;
+  text-align: center;
+
+  h2 {
+    color: $primary-color;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+
+  ol {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    padding-left: 20px;
+
+    li {
+      font-size: 1.2rem;
+      padding: 10px 0;
+      position: relative;
+
+      &::before {
+        content: "✔";
+        color: $primary-color;
+        font-weight: bold;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+// **Testimonials Section**
+.testimonials-section {
+  background-color: $secondary-color;
+  padding: 60px 20px;
+  text-align: center;
+
+  h2 {
+    color: $primary-color;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+
+  .testimonial {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 2px 8px $shadow-color;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: $text-color;
+    }
+  }
+}
+
+// **Responsive Design**
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 60px 20px;
+
+    .hero-content {
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .features-section, .process-section, .testimonials-section {
+    text-align: center;
+
+    .row {
+      flex-direction: column;
+    }
+  }
+}

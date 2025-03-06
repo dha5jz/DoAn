@@ -1,14 +1,15 @@
 import { memo } from "react";
 import Header from "../header";
 import Footer from "../footer";
-import Homepage from "../../homepage";
 
 
 const MasterLayout = ({children, ...props}) => {
     return (
         <div {...props}>
             <Header/>
+            <main style={{ marginTop: '150px' }}> 
             {children}
+            </main>
             <Footer/> 
         </div>
     );

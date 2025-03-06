@@ -1,0 +1,121 @@
+.test-result-guide-page {
+    .guide-section {
+      padding: 50px 0;
+  
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #2f3990;
+        font-weight: 700;
+      }
+  
+      .intro-text {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+  
+      .result-interpretation {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+  
+        h3 {
+          color: #d9534f;
+          text-align: center;
+          margin-bottom: 15px;
+        }
+  
+        .levels {
+          list-style: none;
+          padding: 0;
+  
+          .level {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-weight: bold;
+          }
+  
+          .mild {
+            background: #d4edda;
+            color: #155724;
+          }
+  
+          .moderate {
+            background: #fff3cd;
+            color: #856404;
+          }
+  
+          .severe {
+            background: #f8d7da;
+            color: #721c24;
+          }
+  
+          .critical {
+            background: #f5c6cb;
+            color: #721c24;
+            font-weight: bold;
+          }
+        }
+      }
+  
+      .result-examples {
+        .example {
+          border-radius: 5px;
+          padding: 15px;
+          margin-bottom: 15px;
+          font-weight: bold;
+        }
+  
+        .mild {
+          background: #d4edda;
+        }
+  
+        .moderate {
+          background: #fff3cd;
+        }
+      }
+  
+      .next-steps {
+        ul {
+          padding-left: 20px;
+  
+          li {
+            margin-bottom: 10px;
+            font-size: 16px;
+          }
+        }
+      }
+  
+      .disclaimer {
+        background: #ffcccc;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+  
+        h3 {
+          color: #721c24;
+        }
+      }
+  
+      .support-section {
+        text-align: center;
+        background: #e3f2fd;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 30px;
+  
+        h3 {
+          color: #007bff;
+          margin-bottom: 10px;
+        }
+  
+        p {
+          margin-bottom: 15px;
+        }
+      }
+    }
+  }
+  

@@ -1,0 +1,57 @@
+.contact-custom{
+    background-color: #f6f6f6;
+  }
+.input-custom{
+    background-color: #f6f6f6;
+    
+}
+.h-custom {
+    font-weight: bold;
+    color: #2f3990;
+    position: relative;
+    display: inline-block; /* Giúp đường kẻ xanh chỉ dài bằng chữ */
+    padding-bottom: 8px; /* Khoảng cách giữa chữ và đường kẻ */
+    border-bottom: 2px solid #ccc; /* Đường kẻ xám chạy dài toàn bộ */
+}
+
+.h-custom::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px; /* Chồng lên border-bottom */
+    width: 100%; /* Đặt width là 100% để nó dài bằng chữ */
+    height: 2px; /* Độ dày của đường kẻ */
+    background-color: #193b60;
+    transform: scaleX(0); /* Bắt đầu với độ dài 0 */
+    transition: transform 0.3s ease; /* Hiệu ứng chuyển động */
+}
+
+.h-custom:hover::after {
+    transform: scaleX(1); /* Khi hover, đường kẻ xanh sẽ mở rộng */
+}
+.custom-button {
+    background-color: #2f3990 !important;
+    border: none;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  /* Hover effect */
+  .custom-button:hover {
+    background-color: #1e276b !important;
+  }
+  
+  /* Responsive */
+  @media (max-width: 576px) {
+    .custom-button {
+      width: 100%;
+      font-size: 0.9rem;
+      padding: 12px;
+    }
+  }
+  
+
+  

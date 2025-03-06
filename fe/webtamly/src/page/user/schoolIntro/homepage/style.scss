@@ -1,0 +1,92 @@
+// Import Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+// Màu sắc chủ đạo
+$primary-color: #2f3990;
+$secondary-color: #f8f8f8;
+$text-color: #333;
+$shadow-color: rgba(0, 0, 0, 0.1);
+
+// **Hero Section**
+.hero-section {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("") center/cover no-repeat;
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
+
+  .hero-content {
+    max-width: 700px;
+    margin: 0 auto;
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+    p {
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+  }
+}
+
+// **About Section**
+.about-section {
+  background: $secondary-color;
+  padding: 80px 20px;
+
+  .container {
+    max-width: 1100px;
+  }
+
+  h2 {
+    color: $primary-color;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
+  .school-image {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px $shadow-color;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: $text-color;
+    margin-bottom: 15px;
+  }
+
+  .btn-primary {
+    margin-top: 20px;
+    font-size: 1rem;
+    padding: 10px 20px;
+    background-color: $primary-color;
+    border: none;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}
+
+// **Responsive Design**
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 60px 20px;
+    .hero-content {
+      h1 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .about-section {
+    text-align: center;
+    .row {
+      flex-direction: column;
+    }
+  }
+}

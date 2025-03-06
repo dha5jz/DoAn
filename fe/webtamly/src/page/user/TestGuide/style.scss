@@ -1,0 +1,87 @@
+.test-guide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    padding: 50px 0;
+  
+    .guide-card {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+      .guide-title {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        color: #2f3990;
+        margin-bottom: 20px;
+      }
+  
+      .intro-text {
+        font-size: 1.2rem;
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+      }
+  
+      .section-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #2f3990;
+        margin-top: 20px;
+        margin-bottom: 15px;
+      }
+  
+      .guide-list {
+        list-style: none;
+        padding: 0;
+  
+        li {
+          font-size: 1.1rem;
+          color: #333;
+          padding-left: 30px;
+          position: relative;
+          margin-bottom: 10px;
+  
+          &::before {
+            content: "✔";
+            color: #2f3990;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 0;
+          }
+        }
+      }
+  
+      .warning {
+        li::before {
+          content: "⚠️";
+          color: #d9534f;
+        }
+      }
+  
+      .start-btn-container {
+        text-align: center;
+        margin-top: 30px;
+  
+        .btn-primary {
+          font-size: 1.2rem;
+          padding: 12px 20px;
+          font-weight: bold;
+          background-color: #2f3990;
+          border: none;
+          border-radius: 5px;
+          transition: background 0.3s ease-in-out;
+  
+          &:hover {
+            background-color: #1e286b;
+          }
+        }
+      }
+    }
+  }
+  
