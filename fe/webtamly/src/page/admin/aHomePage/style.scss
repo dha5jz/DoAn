@@ -1,0 +1,13 @@
+.admin-dashboard {
+    .dashboard-card {
+    margin-top: 50px;
+      margin-bottom: 20px;
+      .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      canvas {
+        max-height: 300px;
+      }
+    }
+  }

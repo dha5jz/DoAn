@@ -2,7 +2,6 @@ import { ROUTERS } from "./utils/router";
 import HomePage from "./page/user/homepage";
 import { Route, Routes } from "react-router-dom";
 import MasterLayout from "./page/user/theme/masterLayout";
-import ProfilePage from "./page/user/profileUpdate";
 import ContactPage from "./page/user/contactPage/homepage";
 import SchoolIntro from "./page/user/schoolIntro/homepage";
 import SystemIntro from "./page/user/systemIntro";
@@ -18,6 +17,24 @@ import TestGuide from "./page/user/TestGuide";
 import ProfileUpdate from "./page/user/profileUpdate";
 import ChangePassword from "./page/user/ChangePassword";
 import AssessmentHistory from "./page/user/AssessmentHistory";
+
+
+import AdminLayout from "./page/admin/theme/adminLayout";
+import AdminHomePage from "./page/admin/aHomePage";
+import UserManagement from "./page/admin/userManager/userManager";
+import StudentResults from "./page/admin/studentResult/studentResult";
+import StudentPermissions from "./page/admin/studentPermission/studentPremission";
+import ManageQuestions from "./page/admin/managerQuestion/managerQuestion";
+import AddQuestion from "./page/admin/addQuestion/addQuestion";
+import EditQuestion from "./page/admin/editQuestion/editQuestion";
+import ScheduleRequests from "./page/admin/ScheduleRequests/ScheduleRequest";
+import ScheduleList from "./page/admin/ScheduleList/ScheduleList";
+import GeneralReport from "./page/admin/GeneralReport/GeneralReport";
+import IndividualReport from "./page/admin/IndividualReport/IndividualReport";
+import Logout from "./page/admin/Logout/Logout";
+import ChangePassword1 from "./page/admin/ChangePassword/ChangePassword";
+
+const isAdmin = true;
 const renderUserRouter = () => {
   const userRouters = [
     { path: ROUTERS.USER.HOME, component: <HomePage /> },
@@ -35,7 +52,7 @@ const renderUserRouter = () => {
     { path: ROUTERS.USER.SUPPORT, component: <SupportPage /> }, 
     { path: ROUTERS.USER.ASSESSMENT, component: <AssessmentPage /> }, 
     { path: ROUTERS.USER.DEPRESSION_TEST, component: <DepressionTest /> },
-    { path: ROUTERS.USER.CHANGEPASSWORD, component: <ChangePassword /> },
+    { path: ROUTERS.USER.CHANGEPASSWORD, component: <ChangePassword/> },
     { path: ROUTERS.USER.AssessmentHistory, component: <AssessmentHistory/> },
 
 
@@ -51,9 +68,38 @@ const renderUserRouter = () => {
     </MasterLayout>
   );
 };
+const renderAdminRouter = () => {
+    const adminRouters = [
+      { path: ROUTERS.ADMIN.HOME, component: <AdminHomePage/>}, 
+      { path: ROUTERS.ADMIN.USERMANAGEMENT, component: <UserManagement/>}, 
+      { path: ROUTERS.ADMIN.STUDENTRESULT, component: <StudentResults/>},
+      { path: ROUTERS.ADMIN.STUDENTPERMISSION, component: <StudentPermissions/>}, 
+      { path: ROUTERS.ADMIN.MANAGERQUESTION, component: <ManageQuestions/>}, 
+      { path: ROUTERS.ADMIN.ADDQUESTION, component: <AddQuestion/>},
+      { path: ROUTERS.ADMIN.EDITQUESTION, component: <EditQuestion/>}, 
+      { path: ROUTERS.ADMIN.SCHEDULEREQUESTS, component: <ScheduleRequests/>}, 
+      { path: ROUTERS.ADMIN.SCHEDULELIST, component: <ScheduleList/>}, 
+      { path: ROUTERS.ADMIN.GENERALREPORT, component: <GeneralReport/>}, 
+      { path: ROUTERS.ADMIN.INDIVIDUALREPORT, component: <IndividualReport/>}, 
+      { path: ROUTERS.ADMIN.CHANGEPASSWORD, component: <ChangePassword1/>}, 
+      { path: ROUTERS.ADMIN.LOGOUT, component: <Logout/>}, 
 
-const RouterCustom = () => {
-  return <>{renderUserRouter()}</>;
-};
 
-export default RouterCustom;
+    ];
+  
+    return (
+      <AdminLayout>
+        <Routes>
+          {adminRouters.map((item, key) => (
+            <Route key={key} path={item.path} element={item.component} />
+          ))}
+        </Routes>
+      </AdminLayout>
+    );
+  };
+  
+  const RouterCustom = () => {
+    return <>{isAdmin ? renderAdminRouter() : renderUserRouter()}</>;
+  };
+  
+  export default RouterCustom;
