@@ -1,0 +1,94 @@
+.student-management {
+    padding: 20px;
+    background-color: #f8f9fa;
+  
+    .class-card,
+    .student-card {
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+  
+    .class-card {
+      .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+  
+      .class-item {
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+  
+        &:hover {
+          background-color: #e9ecef;
+        }
+  
+        &.active {
+          background-color: #007bff;
+          color: #fff;
+          border-color: #007bff;
+        }
+      }
+    }
+  
+    .student-card {
+      .card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+  
+      .form-control {
+        margin-bottom: 15px;
+      }
+  
+      table {
+        thead {
+          background-color: #007bff;
+          color: #fff;
+  
+          th {
+            text-align: center;
+            vertical-align: middle;
+          }
+        }
+  
+        tbody {
+          tr:hover {
+            background-color: #f1f1f1;
+          }
+  
+          td {
+            text-align: center;
+            vertical-align: middle;
+  
+            img {
+              border-radius: 4px;
+            }
+          }
+        }
+      }
+    }
+  
+    .student-details {
+      img {
+        display: block;
+        margin: 0 auto 1rem;
+        border-radius: 4px;
+      }
+  
+      p {
+        margin-bottom: 10px;
+        font-size: 1rem;
+        color: #333;
+      }
+    }
+  }
+  

@@ -1,0 +1,24 @@
+.student-permission {
+    padding: 20px;
+  
+    .card {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+      .card-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+  
+      table {
+        th, td {
+          text-align: center;
+          vertical-align: middle;
+        }
+      }
+  
+      .btn-primary {
+        margin-top: 20px;
+      }
+    }
+  }

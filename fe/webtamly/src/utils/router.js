@@ -1,6 +1,6 @@
 export const ROUTERS = {
     USER: {
-      HOME: "/",
+      HOME: "/trang-chu",
       PROFILE: "/tai-khoan/cap-nhat-thong-tin-ca-nhan",
       CONTACT: "/lien-he",
       SCHOOL: "/trang-chu/gioi-thieu-truong",
@@ -16,5 +16,21 @@ export const ROUTERS = {
       TESTGUIDE: "/huong-dan-lam-bai-test",
       CHANGEPASSWORD: "/tai-khoan/doi-mat-khau",
       AssessmentHistory: "/tai-khoan/lich-su-danh-gia"
+    },
+    ADMIN:{
+        HOME:"/admin/trang-chu",
+        USERMANAGEMENT:"/admin/quan-ly-nguoi-dung",
+        STUDENTRESULT: "admin/quan-ly-nguoi-dung/xem-ket-qua-danh-gia",
+        STUDENTPERMISSION: "/admin/quan-ly-nguoi-dung/phan-quyen",
+        MANAGERQUESTION: "/admin/quan-ly-cau-hoi",
+        ADDQUESTION: "/admin/quan-ly-cau-hoi/them-cau-hoi",
+        EDITQUESTION : "/admin/quan-ly-cau-hoi/sua-cau-hoi",
+        SCHEDULELIST: "/admin/lich-danh-gia/quan-ly-lich-danh-gia",
+        SCHEDULEREQUESTS: "/admin/quan-ly-lich-danh-gia/yeu-cau-dat-lich",
+        GENERALREPORT: "/admin/bao-cao/bao-cao-tong-hop",
+        INDIVIDUALREPORT: "/admin/bao-cao/bao-cao-ca-nhan",
+        CHANGEPASSWORD: "/admin/tau-khoan/doi-mat-khau",
+        LOGOUT: "/admin/tai-khoan/dang-xuat"
+
     }
   };
