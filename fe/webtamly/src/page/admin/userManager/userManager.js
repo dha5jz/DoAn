@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 import { FaEye, FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import './style.scss';
+import axios from 'axios';
 
 function StudentManagement() {
   const [classes, setClasses] = useState([]);
@@ -22,39 +23,85 @@ function StudentManagement() {
 
   // Dữ liệu tạm cho form thêm/sửa
   const [addEditData, setAddEditData] = useState({
-    name: '',
+    fullName: '',
     dob: '',
-    class: '',
-    startYear: '',
-    endYear: '',
+    grade: selectedClass || (classes[0] ?? ''),
+    address: '',
     phone: '',
-    photo: '',
+    parentName: '',
+    parentPhone: '',
+    profilePicture: '',
+    CCCD: ''
   });
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 15;
 
-  useEffect(() => {
-    // Danh sách lớp
-    setClasses(['10A1', '10A2', '11A1', '11A2', '12A1', '12A2']);
 
-    // Tạo dữ liệu giả cho 30 học sinh để phân trang (2 trang x 15 học sinh)
-    const dummyStudents = [];
-    for (let i = 1; i <= 30; i++) {
-      dummyStudents.push({
-        id: i,
-        name: `Học sinh ${i}`,
-        dob: '2006-01-01',
-        class: i % 2 === 0 ? '10A1' : '11A2', // Tùy ý chia lớp
-        startYear: '2021',
-        endYear: '2024',
-        phone: `01234567${(i < 10 ? '0' : '') + i}`,
-        photo: 'https://via.placeholder.com/100', // Chỉ hiển thị khi Xem/Chỉnh sửa
-      });
+//get all danh sach
+  const fetchApi = async () => {
+    try {
+        const res = await axios.get('http://localhost:3001/user/getAll');
+        // Nếu API trả về danh sách học sinh, cập nhật state students
+        if (res.data && res.data.user && Array.isArray(res.data.user.data)) { // Kiểm tra res.data.user.data
+          console.log('Dữ liệu API:', res.data.user.data);
+
+
+        // Tạo danh sách học sinh từ API
+        const studentList = res.data.user.data.map(student => ({
+          studentID: student.studentID,
+          username: student.username,
+          fullName: student.fullName,
+          dob: student.dob,
+          grade: student.grade.toUpperCase(), // Chuyển về chữ in hoa
+          address: student.address,
+          phone: student.phone,
+          parentName: student.parentName,
+          parentPhone: student.parentPhone,
+          isAdmin: student.isAdmin,
+          profilePicture: student.profilePicture,
+          CCCD: student.CCCD,
+        }));
+
+      // Hàm lấy chữ cuối cùng của tên
+      const getLastName = (fullName) => {
+        const parts = fullName.trim().split(/\s+/); // Tách tên theo khoảng trắng
+        return parts[parts.length - 1]; // Lấy phần tử cuối cùng (tên)
+      };
+
+      // Sắp xếp theo chữ cái cuối của tên
+      studentList.sort((a, b) => getLastName(a.fullName).localeCompare(getLastName(b.fullName)));
+
+        // Lấy danh sách lớp từ API và loại bỏ trùng lặp
+        const uniqueClasses = [...new Set(studentList.map(student => student.grade))];
+        // Sắp xếp danh sách lớp theo thứ tự mong muốn (10A, 10B, 10C, 11A, ...)
+        uniqueClasses.sort((a, b) => {
+          const numA = parseInt(a.match(/\d+/)[0]); // Lấy số trong "10A"
+          const numB = parseInt(b.match(/\d+/)[0]);
+          const charA = a.match(/[A-Z]+/)[0]; // Lấy chữ trong "10A"
+          const charB = b.match(/[A-Z]+/)[0];
+
+          return numA === numB ? charA.localeCompare(charB) : numA - numB;
+        });
+
+
+
+          setStudents(studentList);
+          setClasses(uniqueClasses);
+        } else {
+            console.warn(' Dữ liệu không hợp lệ:', res.data);
+        }
+    } catch (error) {
+        console.error(' Lỗi khi gọi API:', error);
     }
-    setStudents(dummyStudents);
-  }, []);
+  };
+
+    useEffect(() => {
+      fetchApi();
+
+    }, [])
+
 
   // Lọc theo lớp và tìm kiếm
   const handleClassClick = (className) => {
@@ -63,16 +110,28 @@ function StudentManagement() {
     setCurrentPage(1);
   };
 
-  // Tạo mảng học sinh đã lọc theo lớp & tìm kiếm
-  const filteredStudents = selectedClass
-    ? students.filter(
-        (student) =>
-          student.class === selectedClass &&
-          student.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    : students.filter((student) =>
-        student.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  // Hàm chuyển đổi chuỗi có dấu thành không dấu
+  const removeVietnameseTones = (str) => {
+    return str
+      .normalize("NFD") // Tách dấu khỏi ký tự gốc
+      .replace(/[\u0300-\u036f]/g, "") // Loại bỏ dấu
+      .replace(/đ/g, "d") // Chuyển "đ" thành "d"
+      .replace(/Đ/g, "D"); // Chuyển "Đ" thành "D"
+  };
+
+  // Tạo mảng học sinh đã lọc theo lớp & tìm kiếm không dấu
+  const filteredStudents = students.filter((student) => {
+    const isInSelectedClass = selectedClass ? student.grade === selectedClass : true;
+
+    // Chuẩn hóa tên học sinh và từ khóa tìm kiếm
+    const studentName = removeVietnameseTones(student.fullName.toLowerCase());
+    const searchKeyword = removeVietnameseTones(searchTerm.toLowerCase());
+
+    // Kiểm tra xem tên có chứa từ khóa không
+    const matchesSearchTerm = searchKeyword ? studentName.includes(searchKeyword) : true;
+
+    return isInSelectedClass && matchesSearchTerm;
+  });
 
   // Pagination - cắt mảng theo trang
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -85,6 +144,7 @@ function StudentManagement() {
   const handleView = (student) => {
     setViewModalData(student);
     setShowViewModal(true);
+   
   };
   const handleCloseViewModal = () => setShowViewModal(false);
 
@@ -92,13 +152,15 @@ function StudentManagement() {
   const handleAddStudent = () => {
     setIsEditMode(false);
     setAddEditData({
-      name: '',
+      fullName: '',
       dob: '',
-      class: selectedClass || (classes[0] ?? ''),
-      startYear: '',
-      endYear: '',
+      grade: selectedClass || (classes[0] ?? ''),
+      address: '',
       phone: '',
-      photo: '',
+      parentName: '',
+      parentPhone: '',
+      profilePicture: '',
+      CCCD: ''
     });
     setShowAddEditModal(true);
   };
@@ -108,28 +170,58 @@ function StudentManagement() {
     setIsEditMode(true);
     setAddEditData(student);
     setShowAddEditModal(true);
+
   };
 
   // Xóa học sinh
-  const handleDeleteStudent = (id) => {
-    setStudents(students.filter((student) => student.id !== id));
+  const handleDeleteStudent = async (id) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa học sinh này?")) {
+      try {
+        await axios.delete(`http://localhost:3001/user/delete-user/${id}`);
+        console.log('Học sinh đã được xóa:', id);
+
+        // Cập nhật danh sách học sinh sau khi xóa
+        setStudents((prevStudents) => prevStudents.filter((student) => student.studentID !== id));
+        fetchApi(); // Tải lại dữ liệu sau khi xóa
+      } catch (error) {
+        console.error('Lỗi khi xóa học sinh:', error);
+        alert(error.response?.data?.message || 'Lỗi khi xóa học sinh');
+      }
+    }
   };
+
 
   // Xử lý lưu dữ liệu khi thêm/sửa
-  const handleAddEditSubmit = () => {
-    if (isEditMode) {
-      setStudents(students.map((student) =>
-        student.id === addEditData.id ? addEditData : student
-      ));
-    } else {
-      setStudents([
-        ...students,
-        { ...addEditData, id: students.length + 1 },
-      ]);
-    }
-    setShowAddEditModal(false);
-  };
+  const handleAddEditSubmit = async () => {
+    try {
+      let response;
+      if (isEditMode) {
+        // Gọi API cập nhật người dùng
+        response = await axios.put(`http://localhost:3001/user/update-user/${addEditData.studentID}`, addEditData);
+        console.log('Người dùng được cập nhật:', response.data.user);
 
+        // Cập nhật danh sách học sinh
+        setStudents((prevStudents) =>
+          prevStudents.map((student) =>
+            student.studentID === addEditData.studentID ? response.data.user.use : student
+          )
+        );
+      } else {
+        // Gọi API tạo người dùng mới
+        response = await axios.post('http://localhost:3001/user/create-user', addEditData);
+        console.log('Người dùng được tạo:', response.data.user);
+
+        // Thêm người dùng mới vào danh sách
+        setStudents((prevStudents) => [...prevStudents, response.data.user]);
+      }
+
+      setShowAddEditModal(false); // Đóng modal
+      fetchApi(); // Tải lại dữ liệu sau khi thêm/sửa
+    } catch (error) {
+      console.error('Lỗi:', error);
+      alert(error.response?.data?.message || 'Lỗi khi xử lý dữ liệu');
+    }
+  };
   // Chuyển trang
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -189,26 +281,23 @@ function StudentManagement() {
               <Table striped bordered hover responsive>
                 <thead>
                   <tr>
-                    <th>#</th>
-                    {/* Ẩn cột Ảnh trong bảng */}
+                    <th>STT</th>
+                    <th>ID</th>
                     <th>Họ tên</th>
                     <th>Ngày sinh</th>
                     <th>Lớp</th>
-                    <th>Khóa học</th>
                     <th>SĐT</th>
                     <th>Hành động</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {currentStudents.map((student) => (
-                    <tr key={student.id}>
-                      <td>{student.id}</td>
-                      <td>{student.name}</td>
-                      <td>{student.dob}</td>
-                      <td>{student.class}</td>
-                      <td>
-                        {student.startYear} - {student.endYear}
-                      </td>
+                  {currentStudents.map((student, index) => (
+                    <tr key={student.studentID}>
+                      <td>{(currentPage - 1) * itemsPerPage + index + 1}</td> {/* STT chính xác */}
+                      <td>{student.studentID}</td>
+                      <td>{student.fullName}</td>
+                      <td>{new Date(student.dob).toLocaleDateString("vi-VN")}</td>
+                      <td>{student.grade}</td>
                       <td>{student.phone}</td>
                       <td>
                         <Button variant="info" size="sm" onClick={() => handleView(student)}>
@@ -217,7 +306,7 @@ function StudentManagement() {
                         <Button variant="primary" size="sm" onClick={() => handleEditStudent(student)}>
                           <FaEdit />
                         </Button>{' '}
-                        <Button variant="danger" size="sm" onClick={() => handleDeleteStudent(student.id)}>
+                        <Button variant="danger" size="sm" onClick={() => handleDeleteStudent(student.studentID)}>
                           <FaTrash />
                         </Button>
                       </td>
@@ -252,20 +341,27 @@ function StudentManagement() {
         </Modal.Header>
         <Modal.Body>
           {viewModalData && (
-            <div className="student-details">
+            <div className="student-details" >
               {/* Ảnh chỉ hiển thị trong modal xem chi tiết */}
               <img
-                src={viewModalData.photo}
+                src={viewModalData.profilePicture}
                 alt="student"
                 style={{ width: '100px', height: '100px', objectFit: 'cover', marginBottom: '1rem' }}
               />
-              <p><strong>Họ tên:</strong> {viewModalData.name}</p>
-              <p><strong>Ngày sinh:</strong> {viewModalData.dob}</p>
-              <p><strong>Lớp:</strong> {viewModalData.class}</p>
-              <p>
-                <strong>Khóa học:</strong> {viewModalData.startYear} - {viewModalData.endYear}
-              </p>
-              <p><strong>SĐT:</strong> {viewModalData.phone}</p>
+               {/* Hiển thị toàn bộ thông tin */}
+              <div style={{ textAlign: "left", paddingLeft: "15px" }}>
+                <p><strong>ID:</strong> {viewModalData.studentID}</p>
+                <p><strong>Họ tên:</strong> {viewModalData.fullName}</p>
+                <p><strong>CCCD:</strong> {viewModalData.CCCD}</p>
+                <p><strong>Ngày sinh:</strong> {new Date(viewModalData.dob).toLocaleDateString("vi-VN")}</p>
+                <p><strong>Lớp:</strong> {viewModalData.grade}</p>
+                <p><strong>Địa chỉ:</strong> {viewModalData.address}</p>
+                <p><strong>Số điện thoại:</strong> {viewModalData.phone}</p>
+                <p><strong>Họ tên phụ huynh:</strong> {viewModalData.parentName}</p>
+                <p><strong>Số điện thoại phụ huynh:</strong> {viewModalData.parentPhone}</p>
+              </div>
+             
+              
             </div>
           )}
         </Modal.Body>
@@ -276,7 +372,7 @@ function StudentManagement() {
         </Modal.Footer>
       </Modal>
 
-      {/* Modal Thêm/Sửa Học sinh (có trường photo, nếu muốn xem trước ảnh có thể code thêm) */}
+      {/* Modal Thêm/Sửa Học sinh */}
       <Modal show={showAddEditModal} onHide={() => setShowAddEditModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>{isEditMode ? 'Sửa thông tin' : 'Thêm học sinh'}</Modal.Title>
@@ -284,72 +380,100 @@ function StudentManagement() {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <Form.Label>Họ tên</Form.Label>
-              <Form.Control
-                type="text"
-                value={addEditData.name}
-                onChange={(e) => setAddEditData({ ...addEditData, name: e.target.value })}
-              />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form.Label style={{ width: '150px', marginRight: '10px' }}>Họ tên</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={addEditData.fullName}
+                  onChange={(e) => setAddEditData({ ...addEditData, fullName: e.target.value })}
+                />
+              </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Ngày sinh</Form.Label>
-              <Form.Control
-                type="date"
-                value={addEditData.dob}
-                onChange={(e) => setAddEditData({ ...addEditData, dob: e.target.value })}
-              />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form.Label style={{ width: '150px', marginRight: '10px' }}>Ngày sinh</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={addEditData.dob}
+                  onChange={(e) => setAddEditData({ ...addEditData, dob: e.target.value })}
+                />
+              </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Lớp</Form.Label>
-              <Form.Control
-                as="select"
-                value={addEditData.class}
-                onChange={(e) => setAddEditData({ ...addEditData, class: e.target.value })}
-              >
-                {classes.map((className) => (
-                  <option key={className} value={className}>
-                    {className}
-                  </option>
-                ))}
-              </Form.Control>
-            </Form.Group>
-            <Row>
-              <Col>
-                <Form.Group className="mb-3">
-                  <Form.Label>Khóa từ</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={addEditData.startYear}
-                    onChange={(e) => setAddEditData({ ...addEditData, startYear: e.target.value })}
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group className="mb-3">
-                  <Form.Label>đến</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={addEditData.endYear}
-                    onChange={(e) => setAddEditData({ ...addEditData, endYear: e.target.value })}
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-            <Form.Group className="mb-3">
-              <Form.Label>Số điện thoại</Form.Label>
-              <Form.Control
-                type="text"
-                value={addEditData.phone}
-                onChange={(e) => setAddEditData({ ...addEditData, phone: e.target.value })}
-              />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form.Label style={{ width: '150px', marginRight: '10px' }}>Lớp</Form.Label>
+                <Form.Control
+                  as="select"
+                  value={addEditData.grade}
+                  onChange={(e) => setAddEditData({ ...addEditData, grade: e.target.value })}
+                >
+                  {classes.map((className) => (
+                    <option key={className} value={className}>
+                      {className}
+                    </option>
+                  ))}
+                </Form.Control>
+              </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Ảnh (URL)</Form.Label>
-              <Form.Control
-                type="text"
-                value={addEditData.photo}
-                onChange={(e) => setAddEditData({ ...addEditData, photo: e.target.value })}
-              />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form.Label style={{ width: '150px', marginRight: '10px' }}>Địa chỉ</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={addEditData.address}
+                  onChange={(e) => setAddEditData({ ...addEditData, address: e.target.value })}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form.Label style={{ width: '150px', marginRight: '10px' }}>Số điện thoại</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={addEditData.phone}
+                  onChange={(e) => setAddEditData({ ...addEditData, phone: e.target.value })}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form.Label style={{ width: '150px', marginRight: '10px' }}>Họ tên phụ huynh</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={addEditData.parentName}
+                  onChange={(e) => setAddEditData({ ...addEditData, parentName: e.target.value })}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form.Label style={{ width: '150px', marginRight: '10px' }}>Số điện thoại phụ huynh</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={addEditData.parentPhone}
+                  onChange={(e) => setAddEditData({ ...addEditData, parentPhone: e.target.value })}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form.Label style={{ width: '150px', marginRight: '10px' }}>Ảnh (URL)</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={addEditData.profilePicture}
+                  onChange={(e) => setAddEditData({ ...addEditData, profilePicture: e.target.value })}
+                />
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <Form.Label style={{ width: '150px', marginRight: '10px' }}>CCCD</Form.Label>
+                <Form.Control
+                  type="text"
+                  value={addEditData.CCCD}
+                  onChange={(e) => setAddEditData({ ...addEditData, CCCD: e.target.value })}
+                />
+              </div>
             </Form.Group>
           </Form>
         </Modal.Body>
