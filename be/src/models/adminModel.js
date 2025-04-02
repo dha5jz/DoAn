@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 const adminSchema = new mongoose.Schema(
   {
-    adminID: { type: String, unique: true, required: true }, // Mã quản trị viên (duy nhất, bắt buộc)
+//adminID: { type: String, unique: true, required: true }, // Mã quản trị viên (duy nhất, bắt buộc)
     username: { type: String, unique: true, required: true }, // Tên đăng nhập (duy nhất, bắt buộc)
     password: { type: String, required: true }, // Mật khẩu (đã mã hóa, bắt buộc)
     fullName: { type: String, required: true }, // Họ và tên (bắt buộc)
@@ -11,7 +11,6 @@ const adminSchema = new mongoose.Schema(
     phone: { type: String, required: true }, // Số điện thoại (bắt buộc)
     isAdmin: { type: Boolean, default: true }, // Quyền quản trị (mặc định là true)
     profilePicture: { type: String },
-    role: { type: String, default: 'admin' } // Thêm trường role để phân quyền chi tiết hơn
   },
   { timestamps: true } // Thêm trường createdAt và updatedAt
 );
