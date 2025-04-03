@@ -34,6 +34,8 @@ import IndividualReport from "./page/admin/IndividualReport/IndividualReport";
 import Logout from "./page/admin/Logout/Logout";
 import ChangePassword1 from "./page/admin/ChangePassword/ChangePassword";
 
+import Login from "./page/Login";
+
 const isAdmin = true;
 const renderUserRouter = () => {
   const userRouters = [
@@ -97,9 +99,19 @@ const renderAdminRouter = () => {
       </AdminLayout>
     );
   };
+
   
   const RouterCustom = () => {
-    return <>{isAdmin ? renderAdminRouter() : renderUserRouter()}</>;
+    return (
+      <Routes>
+        <Route path={ROUTERS.LOGIN} element={<Login />} />
+        {isAdmin ? (
+          <Route path="/*" element={renderAdminRouter()} />
+        ) : (
+          <Route path="/*" element={renderUserRouter()} />
+        )}
+      </Routes>
+    );
   };
   
   export default RouterCustom;

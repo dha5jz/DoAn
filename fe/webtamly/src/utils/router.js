@@ -20,7 +20,7 @@ export const ROUTERS = {
     ADMIN:{
         HOME:"/admin/trang-chu",
         USERMANAGEMENT:"/admin/quan-ly-nguoi-dung",
-        STUDENTRESULT: "admin/quan-ly-nguoi-dung/xem-ket-qua-danh-gia",
+        STUDENTRESULT: "/admin/quan-ly-nguoi-dung/xem-ket-qua-danh-gia",
         STUDENTPERMISSION: "/admin/quan-ly-nguoi-dung/phan-quyen",
         MANAGERQUESTION: "/admin/quan-ly-cau-hoi",
         ADDQUESTION: "/admin/quan-ly-cau-hoi/them-cau-hoi",
@@ -29,8 +29,9 @@ export const ROUTERS = {
         SCHEDULEREQUESTS: "/admin/quan-ly-lich-danh-gia/yeu-cau-dat-lich",
         GENERALREPORT: "/admin/bao-cao/bao-cao-tong-hop",
         INDIVIDUALREPORT: "/admin/bao-cao/bao-cao-ca-nhan",
-        CHANGEPASSWORD: "/admin/tau-khoan/doi-mat-khau",
+        CHANGEPASSWORD: "/admin/tai-khoan/doi-mat-khau",
         LOGOUT: "/admin/tai-khoan/dang-xuat"
 
-    }
+    },
+    LOGIN:"/login" 
   };
